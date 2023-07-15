@@ -5,38 +5,30 @@ using UnityEngine;
 
 public class Spawer : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _points;
-    [SerializeField] private GameObject _template;
-    [SerializeField] private int _numberOfTemplates;
+    [SerializeField] private List<SpawnPoint> _points;
+    [SerializeField] private Enemy _template;
+    [SerializeField] private int _numberOfTemplates = 5;
 
-    private List<GameObject> _templates = new List<GameObject>();
+    private WaitForSeconds _waitForSeconds;
 
     private void Start()
     {
-        AddInListTamplates();
-        StartCoroutine(LoadingInScene());      
-    }
+        int secondsWaiting = 2;
+        _waitForSeconds = new WaitForSeconds(secondsWaiting);
 
-    private void AddInListTamplates()
-    {
-        for (int i = 0; i < _numberOfTemplates; i++)
-        {
-            _templates.Add(_template);
-        }
+        StartCoroutine(LoadingInScene());     
     }
 
     private IEnumerator LoadingInScene()
     {
-        int secondsWaiting = 2;
-
-        for (int i = 0; i < _templates.Count; i++)
+        for (int i = 0; i < _numberOfTemplates; i++)
         {
             for (int j = 0; j < _points.Count; j++)
             {
-                Instantiate(_templates[i], _points[j].transform.position, Quaternion.identity);
+                Instantiate(_template, _points[j].transform.position, Quaternion.identity);
             }
-            
-            yield return new WaitForSeconds(secondsWaiting);
+
+            yield return _waitForSeconds;
         }        
     }
 }
