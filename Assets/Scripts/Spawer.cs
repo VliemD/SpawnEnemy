@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class Spawer : MonoBehaviour
     [SerializeField] private GameObject _template;
     [SerializeField] private int _numberOfTemplates;
 
-    private System.Random random = new System.Random();
     private List<GameObject> _templates = new List<GameObject>();
 
     private void Start()
@@ -31,9 +31,12 @@ public class Spawer : MonoBehaviour
 
         for (int i = 0; i < _templates.Count; i++)
         {
+            for (int j = 0; j < _points.Count; j++)
+            {
+                Instantiate(_templates[i], _points[j].transform.position, Quaternion.identity);
+            }
+            
             yield return new WaitForSeconds(secondsWaiting);
-
-            Instantiate(_templates[i], _points[random.Next(_points.Count)].transform.position, Quaternion.identity);
-        }
+        }        
     }
 }
